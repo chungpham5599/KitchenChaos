@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private static readonly int IS_WALKING = Animator.StringToHash("IsWalking");
+    private Animator animator;
+    [SerializeField] Player player;
+
+    private void Awake() 
     {
-        
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        animator.SetBool(IS_WALKING, player.IsWalking());
     }
 }
