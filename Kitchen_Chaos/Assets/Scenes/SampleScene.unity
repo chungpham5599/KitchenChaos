@@ -240,6 +240,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameInput: {fileID: 40360524}
+  counterLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
   movementSpeed: 5
   rotationSpeed: 10
 --- !u!4 &194161748

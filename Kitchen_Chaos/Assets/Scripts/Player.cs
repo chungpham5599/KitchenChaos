@@ -1,15 +1,38 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
+    public static Player Instance { get; private set; }
+
+    public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
+    public class OnSelectedCounterChangedEventArgs : EventArgs 
+    {
+        public ClearCounter selectedCounter;
+    }
+
     [SerializeField] private GameInput gameInput;
     [SerializeField] private LayerMask counterLayerMask;
     [SerializeField] private float movementSpeed = 5f;
     [SerializeField] private float rotationSpeed = 10f;
     private bool isWalking;
     private Vector3 lastInteractionDir;
+    private ClearCounter selectedCounter;
+    private void Awake()
+    {
+        if (Instance != null)
+            Debug.LogError("There's more than one player instance!");
+
+        Instance = this;
+    }
+    private void Start()
+    {
+        gameInput.OnInteractAction += GameInput_OnInteractAction;
+    }
     private void Update()
     {
         HandleMovement();
@@ -47,7 +70,7 @@ public class Player : MonoBehaviour
                 Vector3 moveDirZ = new Vector3(0, 0, moveDir.z).normalized;
                 canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDirZ, moveDistance);
 
-                if (canMove)
+                if (canMove) 
                     moveDir = moveDirZ;
             }
         }
@@ -60,6 +83,11 @@ public class Player : MonoBehaviour
         transform.forward =  Vector3.Slerp(transform.forward, moveDir, rotationSpeed * Time.deltaTime);
     }
 
+    private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+    {
+        if (selectedCounter != null)
+            selectedCounter.Interact();
+    }
     private void HandleInteractions()
     {
         Vector2 inputVector = gameInput.GetMovementVector2Normalized();
@@ -72,10 +100,26 @@ public class Player : MonoBehaviour
         float interactDistance = 2f;
         if (Physics.Raycast(transform.position, lastInteractionDir, out RaycastHit raycastHit, interactDistance, counterLayerMask))
         {
+            // Ray hit a clear counter
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
             {
-                clearCounter.Interact();
+                SetSelectedCounter(selectedCounter);
             }
+            else
+                SetSelectedCounter(null);
         }
+        else
+            SetSelectedCounter(null);
+
+        Debug.Log(selectedCounter);
+    }
+
+    private void SetSelectedCounter(ClearCounter selectedCounter)
+    {
+        this.selectedCounter = selectedCounter;
+        OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
+        {
+            selectedCounter = selectedCounter
+        });
     }
 }
