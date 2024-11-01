@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
-
     public event EventHandler<OnSelectedCounterChangedEventArgs> OnSelectedCounterChanged;
     public class OnSelectedCounterChangedEventArgs : EventArgs 
     {
@@ -83,7 +81,7 @@ public class Player : MonoBehaviour
         transform.forward =  Vector3.Slerp(transform.forward, moveDir, rotationSpeed * Time.deltaTime);
     }
 
-    private void GameInput_OnInteractAction(object sender, System.EventArgs e)
+    private void GameInput_OnInteractAction(object sender, EventArgs e)
     {
         if (selectedCounter != null)
             selectedCounter.Interact();
@@ -102,20 +100,18 @@ public class Player : MonoBehaviour
         {
             // Ray hit a clear counter
             if (raycastHit.transform.TryGetComponent(out ClearCounter clearCounter))
-            {
-                SetSelectedCounter(selectedCounter);
-            }
+                SetSelectedCounter(clearCounter);
             else
                 SetSelectedCounter(null);
         }
         else
             SetSelectedCounter(null);
-
-        Debug.Log(selectedCounter);
     }
 
     private void SetSelectedCounter(ClearCounter selectedCounter)
     {
+        if (this.selectedCounter != null && selectedCounter != null) return;
+        
         this.selectedCounter = selectedCounter;
         OnSelectedCounterChanged?.Invoke(this, new OnSelectedCounterChangedEventArgs
         {
