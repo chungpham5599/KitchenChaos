@@ -245,6 +245,7 @@ MonoBehaviour:
     m_Bits: 8
   movementSpeed: 5
   rotationSpeed: 10
+  playerHoldingPoint: {fileID: 719226937}
 --- !u!4 &194161748
 Transform:
   m_ObjectHideFlags: 0
@@ -259,6 +260,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1257035359}
+  - {fileID: 719226937}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
@@ -551,6 +553,37 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
+--- !u!1 &719226936
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 719226937}
+  m_Layer: 0
+  m_Name: playerHoldingPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &719226937
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719226936}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.16, z: 0.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 194161748}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &765158388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -562,7 +595,7 @@ PrefabInstance:
     - target: {fileID: 1658359644360779470, guid: 99aeb354f4759007c999a69c0db22ae7,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.57
+      value: -1.52
       objectReference: {fileID: 0}
     - target: {fileID: 1658359644360779470, guid: 99aeb354f4759007c999a69c0db22ae7,
         type: 3}
